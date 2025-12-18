@@ -18,7 +18,7 @@ public class Main {
                 .property("hibernate.show_sql", "true")
                 .property("hibernate.format_sql", "true")
                 .property("hibernate.highlight_sql", "true")
-                .managedClasses(Film.class, Director.class);
+                .managedClasses(Film.class, Director.class, Series.class);
             try (EntityManagerFactory emf = cfg.createEntityManagerFactory()) {
                 emf.runInTransaction(em -> {
                     //If no Films in database, add some

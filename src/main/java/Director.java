@@ -14,6 +14,9 @@ public class Director {
     @OneToMany(mappedBy = "director")
     private Set<Film> films = new HashSet<>();
 
+    @ManyToMany()
+    private Set<Series> series = new HashSet<>();
+
     private String name;
     private String country;
     private int birthYear;
