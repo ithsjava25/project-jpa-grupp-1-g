@@ -20,8 +20,6 @@ public class Director {
     @Column(nullable = true)
     private Integer yearOfDeath;
 
-
-
     public Set<Film> getFilms() {
         return films;
     }
@@ -69,7 +67,6 @@ public class Director {
     public Long getId() {
         return id;
     }
-
 
 }
 

@@ -1,5 +1,7 @@
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Film {
     @Id
@@ -33,6 +35,26 @@ public class Film {
 
     public Long getId() {
         return id;
+    }
+
+    //Lägg till en ny film
+    public static void addFilm(EntityManager em, String title, Director director) {
+        Film film = new Film();
+        film.setTitle(title);
+        film.setDirector(director);
+        em.persist(film);
+        System.out.println("Film tillagd: " + title);
+    }
+    //Hämta alla filmer
+    public static List<Film> getAllFilms(EntityManager em) {
+        return em.createQuery("FROM Film", Film.class).getResultList();
+    }
+
+    //Hämta filmer regisserade av en viss regissör
+    public static List<Film> getFilmsByDirector(EntityManager em, Director director) {
+        return em.createQuery("FROM Film f WHERE f.director = :director", Film.class)
+            .setParameter("director", director)
+            .getResultList();
     }
 
 

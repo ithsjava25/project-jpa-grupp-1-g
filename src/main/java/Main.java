@@ -21,18 +21,39 @@ public class Main {
                 .managedClasses(Film.class, Director.class);
             try (EntityManagerFactory emf = cfg.createEntityManagerFactory()) {
                 emf.runInTransaction(em -> {
+                    //Skapa regissör för test
+                    Director director = new Director();
+                    director.setName("Christopher Bolan");
+                    director.setCountry("United States");
+                    director.setBirthYear(1970);
+                    em.persist(director);
+
+                    //Testa att lägga till filmer
+                    Film.addFilm(em, "The Dirk Knight", director);
+                    Film.addFilm(em, "Inception", director);
+
+                    //Testa att hämta alla filmer
+                    System.out.println("\nAlla filmer:");
+                    List<Film> films = Film.getAllFilms(em);
+                    films.forEach(film -> System.out.println(film.getTitle()));
+
+                    //Testa att hämta filmer av en viss regissör
+                    System.out.println("\nAlla filmer av regissör:");
+                    List<Film> filmsByDirector = Film.getFilmsByDirector(em, director);
+                    filmsByDirector.forEach(film -> System.out.println(film.getTitle()));
+
                     //If no Films in database, add some
-                    if (em.createQuery("select count(o) from Film o", Long.class)
-                        .getSingleResult() == 0) {
-                        Film film1 = new Film();
-                        em.persist(film1);
-                        em.flush();
-                        Film film2 = new Film();
-                        em.persist(film2);
-                    }
-                    System.out.println("==== Using select query, N + 1 ====");
-                    em.createQuery("from Film", Film.class)
-                        .getResultList().forEach(System.out::println);
+//                    if (em.createQuery("select count(o) from Film o", Long.class)
+//                        .getSingleResult() == 0) {
+//                        Film film1 = new Film();
+//                        em.persist(film1);
+//                        em.flush();
+//                        Film film2 = new Film();
+//                        em.persist(film2);
+//                    }
+//                    System.out.println("==== Using select query, N + 1 ====");
+//                    em.createQuery("from Film", Film.class)
+//                        .getResultList().forEach(System.out::println);
 
                 });
 
