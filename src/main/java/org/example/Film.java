@@ -2,7 +2,9 @@ package org.example;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Film extends BaseEntity {
@@ -14,6 +16,8 @@ public class Film extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "director_id")
     private Director director;
+
+    private Set<Director> directors = new HashSet<>();
 
     public Director getDirector() {
         return director;
@@ -39,25 +43,30 @@ public class Film extends BaseEntity {
         return id;
     }
 
-    //Lägg till en ny film
-    public static void addFilm(EntityManager em, String title, Director director) {
-        Film film = new Film();
-        film.setTitle(title);
-        film.setDirector(director);
-        em.persist(film);
-        System.out.println("org.example.Film tillagd: " + title);
-    }
-    //Hämta alla filmer
-    public static List<Film> getAllFilms(EntityManager em) {
-        return em.createQuery("FROM Film", Film.class).getResultList();
-    }
+//    //Lägg till en ny film
+//    public static void addFilm(EntityManager em, String title, Director director) {
+//        Film film = new Film();
+//        film.setTitle(title);
+//        film.setDirector(director);
+//        em.persist(film);
+//        System.out.println("org.example.Film tillagd: " + title);
+//    }
+//    //Hämta alla filmer
+//    public static List<Film> getAllFilms(EntityManager em) {
+//        return em.createQuery("FROM Film", Film.class).getResultList();
+//    }
+//
+//    //Hämta filmer regisserade av en viss regissör
+//    public static List<Film> getFilmsByDirector(EntityManager em, Director director) {
+//        return em.createQuery("FROM Film f WHERE f.director = :director", Film.class)
+//            .setParameter("director", director)
+//            .getResultList();
+//    }
 
-    //Hämta filmer regisserade av en viss regissör
-    public static List<Film> getFilmsByDirector(EntityManager em, Director director) {
-        return em.createQuery("FROM Film f WHERE f.director = :director", Film.class)
-            .setParameter("director", director)
-            .getResultList();
+
+    public void addDirector(Director director) {
+        directors.add(director);
+        director.setFilm(this);
+
     }
-
-
 }

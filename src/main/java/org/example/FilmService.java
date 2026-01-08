@@ -1,6 +1,6 @@
 package org.example;
 
-
+import jakarta.transaction.Transactional;
 
 public class FilmService {
 
@@ -10,20 +10,20 @@ public class FilmService {
         this.filmRepository = filmRepository;
     }
 
-
+    @Transactional
     public Film create(Film film) {
         return (Film) filmRepository.save(film);
     }
 
-    // TODO: Ändra till addDirector??
-    public void addFilm(Long directorId, Film film) {
-        Director director = (Director) directorRepository.findById(directorId)
+    @Transactional
+    public void addDirector(Long FilmId, Director director) {
+        Film film = (Film) filmRepository.findById(FilmId)
             .orElseThrow();
 
-        director.addFilm(film);
+        film.addDirector(director);
     }
 
-
+    @Transactional
     public FilmDTO find(Long id) {
         return filmRepository.findById(id)
             .map(d -> new FilmDTO(d.getTitle()))
@@ -37,7 +37,7 @@ public class FilmService {
 //
 //        directorRepository.delete(director);
 //    }
-
+    @Transactional
     public Film findFilm(Long id) {
         Film film = (Film) filmRepository.findById(id)
             .orElseThrow();
