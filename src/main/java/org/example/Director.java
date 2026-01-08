@@ -113,15 +113,15 @@ public class Director extends BaseEntity{
         return id;
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (!(o instanceof Director)) return false;
-//        Director other = (Director) o;
-//        return id != null && id.equals(other.id);
-//    }
-//    @Override
-//    public int hashCode() {
-//       return 31;
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Director)) return false;
+        Director other = (Director) o;
+        return id != null && id.equals(other.id);
+    }
+    @Override
+    public int hashCode() {
+       return 31;
+    }
 }
