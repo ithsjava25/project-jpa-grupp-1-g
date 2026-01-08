@@ -4,6 +4,6 @@ import java.util.Optional;
 
 public interface FilmRepository<B> extends Repository<Film> {
 
-    Optional<Film> findByName(String name);
+    Optional<Film> findByName(String title);
 
 }
