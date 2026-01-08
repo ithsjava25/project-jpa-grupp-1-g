@@ -1,6 +1,6 @@
-import jakarta.persistence.Entity;
+package org.example;
+
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import jakarta.persistence.PersistenceConfiguration;
 import org.hibernate.jpa.HibernatePersistenceConfiguration;
 
@@ -43,16 +43,16 @@ public class Main {
                     filmsByDirector.forEach(film -> System.out.println(film.getTitle()));
 
                     //If no Films in database, add some
-//                    if (em.createQuery("select count(o) from Film o", Long.class)
+//                    if (em.createQuery("select count(o) from org.example.Film o", Long.class)
 //                        .getSingleResult() == 0) {
-//                        Film film1 = new Film();
+//                        org.example.Film film1 = new org.example.Film();
 //                        em.persist(film1);
 //                        em.flush();
-//                        Film film2 = new Film();
+//                        org.example.Film film2 = new org.example.Film();
 //                        em.persist(film2);
 //                    }
 //                    System.out.println("==== Using select query, N + 1 ====");
-//                    em.createQuery("from Film", Film.class)
+//                    em.createQuery("from org.example.Film", org.example.Film.class)
 //                        .getResultList().forEach(System.out::println);
 
                 });

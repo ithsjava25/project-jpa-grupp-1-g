@@ -1,3 +1,5 @@
+package org.example;
+
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -43,7 +45,7 @@ public class Film {
         film.setTitle(title);
         film.setDirector(director);
         em.persist(film);
-        System.out.println("Film tillagd: " + title);
+        System.out.println("org.example.Film tillagd: " + title);
     }
     //Hämta alla filmer
     public static List<Film> getAllFilms(EntityManager em) {

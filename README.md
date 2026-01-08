@@ -37,7 +37,7 @@ One-to-Many: En turnering → flera matcher
 
 Many-to-Many: Spelare ↔ Lag
 
-### Film- och serietjänst (à la Netflix) 🎬
+### org.example.Film- och serietjänst (à la Netflix) 🎬
 
 One-to-Many: En regissör → flera filmer/serier
 
