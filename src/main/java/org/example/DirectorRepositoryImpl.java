@@ -1,13 +1,15 @@
 package org.example;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 
 import java.util.Optional;
 
 public class DirectorRepositoryImpl extends BaseRepositoryImpl<Director> implements DirectorRepository<Director> {
 
-    public DirectorRepositoryImpl(EntityManager em) {
-        super(em, Director.class);
+    public DirectorRepositoryImpl(EntityManagerFactory em) {
+
+        super(em.createEntityManager(), Director.class);
     }
 
     @Override
