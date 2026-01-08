@@ -15,5 +15,4 @@ public interface Repository<T extends org.example.BaseEntity> {
     void flush();
 
     void clear();
-
 }
