@@ -1,19 +1,17 @@
 package org.example;
 
 import jakarta.persistence.*;
-import org.example.Director;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
 public class Series extends BaseEntity{
 
-
     private Long id;
 
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToMany
+        (mappedBy = "series", cascade = { CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Director> directors = new HashSet<>();
 
     private String title;
@@ -22,10 +20,7 @@ public class Series extends BaseEntity{
     private Integer lastAired;
     private String starActors;
 
-    public void setId(Long id) {
 
-        this.id = id;
-    }
 
     public void setTitle(String title) {
 
@@ -59,12 +54,9 @@ public class Series extends BaseEntity{
 
 
 
-    private static void add(Series s) {
-    }
 
-    public Long getId() {
-        return id;
-    }
+
+
 
     public String getTitle() {
         return title;

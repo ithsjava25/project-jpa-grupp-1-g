@@ -1,7 +1,7 @@
 package org.example;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+
 import org.example.Director;
 
 import java.util.Objects;
@@ -9,15 +9,12 @@ import java.util.Objects;
 @Entity
 public class Film extends BaseEntity{
 
-
     private Long id;
 
-    @NotNull(message = "Title cannot be null")
-    @Size(min = 1, max = 255, message = "Title must be between 1 and 255 characters")
     private String title;
     @ManyToOne
 
-    @NotNull(message = "A film must have a director")
+
     private Director director;
 
     public Director getDirector() {
@@ -44,13 +41,6 @@ public class Film extends BaseEntity{
 
         return id;
     }
-
-
-
-
-
-
-
 
     @Override
     public boolean equals(Object o) {
