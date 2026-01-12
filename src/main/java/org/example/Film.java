@@ -45,7 +45,6 @@ public class Film extends BaseEntity{
     }
 
     public Long getId() {
-
         return id;
     }
 
