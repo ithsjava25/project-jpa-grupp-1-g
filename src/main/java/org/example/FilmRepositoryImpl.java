@@ -1,12 +1,12 @@
 package org.example;
 
-import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 
 import java.util.Optional;
 
 public class FilmRepositoryImpl extends BaseRepositoryImpl<Film> implements FilmRepository<Film> {
 
-    public FilmRepositoryImpl(EntityManager em) {
+    public FilmRepositoryImpl(EntityManagerFactory em) {
         super(em.createEntityManager(), Film.class);
     }
 
