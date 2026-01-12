@@ -24,6 +24,7 @@ public class Director extends BaseEntity{
                 name = "director_series",
                 joinColumns = @JoinColumn(name = "directors_id"),
                 inverseJoinColumns = @JoinColumn(name = "series_id"))
+
     private Set<Series> series = new HashSet<>();
 
     private String name;

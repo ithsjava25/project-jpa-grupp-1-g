@@ -10,10 +10,9 @@ public class Series extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; //CodeRabbit suggests removing this line, but it gives errors below
 
-    @ManyToMany
-        (mappedBy = "series", cascade = { CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "series", cascade = { CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Director> directors = new HashSet<>();
 
     private String title;
@@ -53,12 +52,6 @@ public class Series extends BaseEntity{
 
         this.starActors = starActors;
     }
-
-
-
-
-
-
 
     public String getTitle() {
         return title;

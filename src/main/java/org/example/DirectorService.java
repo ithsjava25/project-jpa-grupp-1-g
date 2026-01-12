@@ -38,10 +38,13 @@ public class DirectorService {
     }
 
     public Director findDirector(Long id) {
-        Director director = (Director) directorRepository.findById(id)
-            .orElseThrow();
-
-        return director;
-
+        //Old code
+//        Director director = (Director) directorRepository.findById(id)
+//            .orElseThrow();
+//
+//        return director;
+        //New code
+        return directorRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Director not found: " + id));
     }
 }

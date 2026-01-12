@@ -21,31 +21,29 @@ public class Main {
 
             emf.runInTransaction(em -> {
 
-
-
-
-                try {
-                    em.getTransaction().begin();
-                    DirectorRepositoryImpl directorRepository = new DirectorRepositoryImpl(emf);
-                    Director d = new Director();
-                    d.setName("John Doe");
-
-                    directorRepository.save(d);
-
-                    em.getTransaction().commit();
-                    
-                } catch (Exception e) {
-                    System.err.println("Error: " + e.getMessage());
-                } finally {
-                    em.close();
-                }
-
+            //Old code that CodeRabbit suggested to remove
+//                try {
+//                    em.getTransaction().begin();
+//                    DirectorRepositoryImpl directorRepository = new DirectorRepositoryImpl(emf);
+//                    Director d = new Director();
+//                    d.setName("John Doe");
+//
+//                    directorRepository.save(d);
+//
+//                    em.getTransaction().commit();
+//
+//                } catch (Exception e) {
+//                    System.err.println("Error: " + e.getMessage());
+//
+//                } finally {
+//                    em.close();
+//                }
+                Director d = new Director();
+                d.setName("Example Director");
+                d.setCountry("USA");
+                d.setBirthYear(1970);
+                em.persist(d);
             });
-
         }
     }
-
-
-
-
 }

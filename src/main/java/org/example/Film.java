@@ -9,6 +9,13 @@ import java.util.Objects;
 @Entity
 public class Film extends BaseEntity{
 
+    /*
+    Remove duplicate id field that shadows BaseEntity's @Id mapping
+
+    Film extends BaseEntity, which already defines @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id.
+    The duplicate private Long id declaration on line 12 shadows the inherited id and breaks JPA entity mapping.
+    The corresponding setId/getId methods (lines 36–42) operate on this shadow field instead of the actual mapped id from BaseEntity.
+     */
     private Long id;
 
     private String title;
