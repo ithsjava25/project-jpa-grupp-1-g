@@ -8,10 +8,6 @@ import java.util.Set;
 @Entity
 public class Series extends BaseEntity{
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //private Long id; //CodeRabbit suggests removing this line, but it gives errors below
-
     @ManyToMany(mappedBy = "series", cascade = { CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Director> directors = new HashSet<>();
 
@@ -77,16 +73,16 @@ public class Series extends BaseEntity{
         return starActors;
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (!(o instanceof Series)) return false;
-//        Series other = (Series) o;
-//        return id != null && id.equals(other.id);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return 31;
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Series)) return false;
+        Series other = (Series) o;
+        return getId() != null && getId().equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
+    }
 }

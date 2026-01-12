@@ -14,18 +14,10 @@ public class DirectorRepositoryImpl extends BaseRepositoryImpl<Director> impleme
 
     @Override
     public Optional<Director> findByName(String name) {
-        try {
         return em.createQuery("SELECT d FROM Director d WHERE d.name = :name", Director.class)
             .setParameter("name", name)
             .getResultStream()
             .findFirst();
-        } catch (Exception e) {
-        System.err.println("Error: " + e.getMessage());
 
-        } finally {
-                   em.close();
-               }
-
-        return Optional.empty();
     }
 }
