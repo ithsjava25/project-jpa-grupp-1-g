@@ -1,9 +1,9 @@
+package org.example;
+
 import jakarta.persistence.EntityManager;
 
-import java.io.IOException;
-
 public class CLI {
-    private final String os = System.getProperty("os.name");
+    //private final String os = System.getProperty("os.name");
     EntityManager em;
 
     void mainMenu(EntityManager entityManager) { //throws IOException, InterruptedException {
@@ -64,36 +64,73 @@ public class CLI {
 
     private void createDirector() { //throws IOException, InterruptedException {
         //clearConsole();
-        String name = IO.readln("Enter the full name of the Director: ");
-        String country = IO.readln("Enter the country of the Director: ");
-        int birthYear =  Integer.parseInt(IO.readln("Enter the birth year of the Director: "));
-        Integer yearOfDeath = Integer.valueOf(IO.readln("Enter the year of death of the Director." +
-                                                                "If they're alive, leave blank: "));
+        String name;
+        String country;
+        int birthYear;
+        Integer yearOfDeath = null;
+        try {
+            name = IO.readln("Enter the full name of the Director: ");
+            country = IO.readln("Enter the country of the Director: ");
+            birthYear = Integer.parseInt(IO.readln("Enter the birth year of the Director: "));
+            try {
+                yearOfDeath = Integer.valueOf(IO.readln("Enter the year of death of the Director." +
+                                                                        "If they're alive, leave blank: "));
+            } catch (NumberFormatException _) {
+            }
 
-        //TODO:
-        //send information to create-method in Director class
+            Director newDirector = new Director();
+            newDirector.setName(name);
+            newDirector.setCountry(country);
+            newDirector.setBirthYear(birthYear);
+            newDirector.setYearOfDeath(yearOfDeath);
+            DirectorService.create(newDirector);
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input!");
+        }
     }
 
     private void listDirectors() {
-        IO.println(Director.findAll(em));
+        IO.println(DirectorService.findDirector());
     }
 
     private void listSpecificDirector() {
-        String name = IO.readln("Enter the name of the Director: ");
-        IO.println(Director.findByName(em, name));
+        Long id = Long.valueOf(IO.readln("Enter the ID of the Director: "));
+        IO.println(DirectorService.findDirector(id).getName());
     }
 
     private void updateDirector() {
+        Long id = Long.valueOf(IO.readln("Enter the ID of the Director: "));
+
         IO.println("When prompted, enter the value you wish to update." +
             "If you don't want to change it, leave the input blank.");
 
         String name = IO.readln("Enter the full name of the Director: ");
         String country = IO.readln("Enter the country of the Director: ");
-        Integer birthYear =  Integer.valueOf(IO.readln("Enter the birth year of the Director: "));
-        Integer yearOfDeath = Integer.valueOf(IO.readln("Enter the year of death of the Director: "));
+        Integer birthYear = null;
+        Integer yearOfDeath = null;
+        try {
+            birthYear = Integer.valueOf(IO.readln("Enter the birth year of the Director: "));
+        } catch (NumberFormatException _) {
+        }
+        try {
+            yearOfDeath = Integer.valueOf(IO.readln("Enter the year of death of the Director: "));
+        } catch (NumberFormatException _) {
+        }
 
         //TODO:
         //Determine which values aren't null, and update them
+        Director updatedDirector = DirectorService.findDirector(id);
+        if(name != null && !name.isEmpty())
+            updatedDirector.setName(name);
+        if(country != null && !country.isEmpty())
+            updatedDirector.setCountry(country);
+        if(birthYear != null)
+            updatedDirector.setBirthYear(birthYear);
+        if(yearOfDeath != null)
+            updatedDirector.setYearOfDeath(yearOfDeath);
+        DirectorService.create(updatedDirector);
+
     }
 
     private void filmMenu() { //throws IOException, InterruptedException {
@@ -126,7 +163,7 @@ public class CLI {
         String title = IO.readln("Enter the title of the Film: ");
 
         //TODO:
-        //send information to create-method in Film class
+        //send information to create-method in org.example.Film class
     }
 
     private void listFilms() {
