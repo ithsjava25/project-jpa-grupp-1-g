@@ -24,6 +24,19 @@ public class Main {
                  d.setName("John Doe");
                  directorRepository.save(d);
              });
+
+             DirectorRepositoryImpl directorRepository = new DirectorRepositoryImpl(emf);
+             DirectorService directorService = new DirectorService(directorRepository);
+
+             FilmRepositoryImpl filmRepository = new FilmRepositoryImpl(emf);
+             FilmService filmService = new FilmService(filmRepository);
+
+             SeriesRepositoryImpl seriesRepository = new SeriesRepositoryImpl(emf);
+             SeriesService seriesService = new SeriesService(seriesRepository);
+
+             CLI cli = new CLI();
+             cli.cliStart(directorService, filmService, seriesService);
          }
+
     }
 }

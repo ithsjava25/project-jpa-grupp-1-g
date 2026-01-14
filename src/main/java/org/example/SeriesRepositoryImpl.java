@@ -13,9 +13,6 @@ public class SeriesRepositoryImpl extends BaseRepositoryImpl<Series> implements 
         this.emf = em;
     }
 
-
-    }
-
     @Override
     public Optional<Series> findByName(String title){
         return em.createQuery("SELECT s FROM Series s WHERE s.title = :title", Series.class)

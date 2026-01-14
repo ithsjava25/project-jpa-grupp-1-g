@@ -24,20 +24,20 @@ public class DirectorService {
         directorRepository.save(director);
     }
 
-    public Director update(Long id, Director director) {
-        Director existingDirector = directorRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Director not found"));
-
-
-        existingDirector.setYearOfDeath(director.getYearOfDeath());
-        existingDirector.setCountry(director.getCountry());
-        existingDirector.setBirthYear(director.getBirthYear());
-        existingDirector.setName(director.getName());
-
-        for (Film film : director.getFilms()) {
-            existingDirector.addFilm(film);
-        }
-        return directorRepository.save(existingDirector);
+    public void update(Director director) {
+//        Director existingDirector = directorRepository.findById(id)
+//            .orElseThrow(() -> new RuntimeException("Director not found"));
+//
+//
+//        existingDirector.setYearOfDeath(director.getYearOfDeath());
+//        existingDirector.setCountry(director.getCountry());
+//        existingDirector.setBirthYear(director.getBirthYear());
+//        existingDirector.setName(director.getName());
+//
+//        for (Film film : director.getFilms()) {
+//            existingDirector.addFilm(film);
+//        }
+        directorRepository.save(director);
     }
 
 
