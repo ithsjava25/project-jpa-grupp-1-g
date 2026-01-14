@@ -38,6 +38,10 @@ public class Director extends BaseEntity{
 
 
 
+    public Set<Series> getSeries() {
+        return series;
+    }
+
     public Set<Film> getFilms() {
         return films;
     }

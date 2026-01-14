@@ -1,9 +1,6 @@
 package org.example;
 
-import jakarta.persistence.EntityManager;
-
 public class CLI {
-    //private final String os = System.getProperty("os.name");
     DirectorService directorService;
     FilmService filmService;
     SeriesService seriesService;
@@ -16,9 +13,8 @@ public class CLI {
         mainMenu();
     }
 
-    void mainMenu() { //throws IOException, InterruptedException {
+    void mainMenu() {
         while(true) {
-            //clearConsole();
 
             System.out.println("""
                 Welcome to the Film Database!
@@ -47,8 +43,7 @@ public class CLI {
             "\nPlease enter the number of the option you wish to choose");
     }
 
-    private void directorMenu() { //throws IOException, InterruptedException {
-        //clearConsole();
+    private void directorMenu() {
         System.out.println("""
             You are in the Director Menu.
 
@@ -72,8 +67,7 @@ public class CLI {
         }
     }
 
-    private void createDirector() { //throws IOException, InterruptedException {
-        //clearConsole();
+    private void createDirector() {
         String name;
         String country;
         int birthYear;
@@ -101,7 +95,7 @@ public class CLI {
     }
 
     private void listDirectors() {
-        IO.println(directorService.findAllDirectors());
+        IO.println(directorService.findAll());
     }
 
     private void listSpecificDirector() {
@@ -143,7 +137,7 @@ public class CLI {
         } catch (NumberFormatException _) {
         }
 
-        Director updatedDirector = directorService.findDirector(id);
+        Director updatedDirector = directorService.findDirectorId(id);
         if(name != null && !name.isEmpty())
             updatedDirector.setName(name);
         if(country != null && !country.isEmpty())
@@ -156,8 +150,7 @@ public class CLI {
 
     }
 
-    private void filmMenu() { //throws IOException, InterruptedException {
-        //clearConsole();
+    private void filmMenu() {
         System.out.println("""
             You are in the Film Menu.
 
@@ -181,14 +174,13 @@ public class CLI {
         }
     }
 
-    private void createFilm() { //throws IOException, InterruptedException {
-        //clearConsole();
+    private void createFilm() {
         String title = IO.readln("Enter the title of the Film: ");
 
         try {
             Film film = new Film();
             film.setTitle(title);
-            film.setDirector(directorService.findDirector(Long.valueOf(IO.readln("Enter the ID of the Director: "))));
+            film.setDirector(directorService.findDirectorId(Long.valueOf(IO.readln("Enter the ID of the Director: "))));
             filmService.create(film);
         } catch (NumberFormatException e) {
             System.out.println("Invalid input!");
@@ -216,12 +208,12 @@ public class CLI {
         try {
             IO.println("When prompted, enter the value you wish to update." +
                 "\nIf you don't want to change it, leave the input blank.");
-            Film film = filmService.findFilm(Long.valueOf(IO.readln("Enter the ID of the Film: ")));
+            Film film = filmService.findFilmId(Long.valueOf(IO.readln("Enter the ID of the Film: ")));
             String title = IO.readln("Enter the title of the Film: ");
             if(title != null && !title.isEmpty())
                 film.setTitle(title);
             try {
-                Director director = directorService.findDirector(Long.valueOf(IO.readln("Enter the ID of the Director: ")));
+                Director director = directorService.findDirectorId(Long.valueOf(IO.readln("Enter the ID of the Director: ")));
                 film.setDirector(director);
             } catch (NumberFormatException _) {
             }
@@ -232,8 +224,7 @@ public class CLI {
         }
     }
 
-    private void seriesMenu() { //throws IOException, InterruptedException {
-        //clearConsole();
+    private void seriesMenu() {
         System.out.println("""
             You are in the Series Menu.
 
@@ -257,8 +248,7 @@ public class CLI {
         }
     }
 
-    private void createSeries() { //throws IOException, InterruptedException {
-        //clearConsole();
+    private void createSeries() {
         try {
             String title = IO.readln("Enter the title of the Series: ");
             int episodes = Integer.parseInt(IO.readln("Enter the number of episodes in the Series: "));
@@ -311,37 +301,35 @@ public class CLI {
     private void updateSeries() {
         IO.println("When prompted, enter the value you wish to update." +
             "\nIf you don't want to change it, leave the input blank.");
-        Series series = seriesService.findSeriesId(IO.readln("Enter the ID of the Series: "));
-        String title = IO.readln("Enter the title of the Series: ");
-        if (title != null && !title.isEmpty())
-            series.setTitle(title);
         try {
-            int episodes = Integer.parseInt(IO.readln("Enter the number of episodes in the Series: "));
-            series.setEpisodes(episodes);
-        } catch (NumberFormatException _) {
-        }
-        try {
-            int firstAired = Integer.parseInt(IO.readln("Enter the year the Series was first released: "));
-            series.setFirstAired(firstAired);
-        } catch (NumberFormatException _) {
-        }
-        try {
-            Integer lastAired = Integer.valueOf(IO.readln("Enter the year the Series ended: "));
-            series.setLastAired(lastAired);
-        } catch (NumberFormatException _) {
-        }
-        String starActors = IO.readln("Enter the star actors of the Series: ");
-        if (starActors != null && !starActors.isEmpty())
-            series.setStarActors(starActors);
+            Series series = seriesService.findSeriesId(Long.valueOf(IO.readln("Enter the ID of the Series: ")));
+            String title = IO.readln("Enter the title of the Series: ");
+            if (title != null && !title.isEmpty())
+                series.setTitle(title);
+            try {
+                int episodes = Integer.parseInt(IO.readln("Enter the number of episodes in the Series: "));
+                series.setEpisodes(episodes);
+            } catch (NumberFormatException _) {
+            }
+            try {
+                int firstAired = Integer.parseInt(IO.readln("Enter the year the Series was first released: "));
+                series.setFirstAired(firstAired);
+            } catch (NumberFormatException _) {
+            }
+            try {
+                Integer lastAired = Integer.valueOf(IO.readln("Enter the year the Series ended: "));
+                series.setLastAired(lastAired);
+            } catch (NumberFormatException _) {
+            }
+            String starActors = IO.readln("Enter the star actors of the Series: ");
+            if (starActors != null && !starActors.isEmpty())
+                series.setStarActors(starActors);
 
-        seriesService.update(series);
+            seriesService.update(series);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input!");
+        }
+
     }
-
-//    private void clearConsole() throws IOException, InterruptedException {
-//        if(os.contains("Windows"))
-//            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-//        else
-//            new ProcessBuilder("clear").inheritIO().start().waitFor();
-//    }
 
 }
