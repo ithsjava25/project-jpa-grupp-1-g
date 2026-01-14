@@ -32,32 +32,31 @@ public class Main {
              SeriesRepositoryImpl seriesRepository = new SeriesRepositoryImpl(emf);
              SeriesService seriesService = new SeriesService(seriesRepository);
 
-             emf.runInTransaction(em -> {
-                 if (!directorRepository.findAll().iterator().hasNext()) {
-                     Director d = new Director();
-                     d.setName("John Doe");
-                     directorRepository.save(d);
-                 }
-             });
-
-             if (!directorRepository.findAll().iterator().hasNext()){
-                 EntityManager entityManager = emf.createEntityManager();
-                 EntityTransaction entityTransaction = entityManager.getTransaction();
-                 entityTransaction.begin();
-                 Director director = new Director();
-                 director.setName("John Doeson");
-                 director.setCountry("USA");
-                 director.setBirthYear(1970);
-                 entityManager.persist(director);
-                 entityManager.getTransaction().commit();
-                 entityManager.close();
-             }
-
-
              CLI cli = new CLI();
              cli.cliStart(directorService, filmService, seriesService);
-        }
-    }
+         }
+     }
+//             emf.runInTransaction(em -> {
+//                 if (!directorRepository.findAll().iterator().hasNext()) {
+//                     Director d = new Director();
+//                     d.setName("John Doe");
+//                     directorRepository.save(d);
+//                 }
+//             });
+
+//             if (!directorRepository.findAll().iterator().hasNext()){
+//                 EntityManager entityManager = emf.createEntityManager();
+//                 EntityTransaction entityTransaction = entityManager.getTransaction();
+//                 entityTransaction.begin();
+//                 Director director = new Director();
+//                 director.setName("John Doeson");
+//                 director.setCountry("USA");
+//                 director.setBirthYear(1970);
+//                 entityManager.persist(director);
+//                 entityManager.getTransaction().commit();
+//                 entityManager.close();
+//             }
+
 
     private static List<Class<?>> getEntities(String pkg) {
         List<Class<?>> entities;

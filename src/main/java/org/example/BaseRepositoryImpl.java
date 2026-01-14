@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class BaseRepositoryImpl<T extends org.example.BaseEntity> implements Repository<T> {
@@ -84,7 +85,7 @@ public class BaseRepositoryImpl<T extends org.example.BaseEntity> implements Rep
     @Override
     public Iterable<T> findAll() {
 
-        Iterable<T> entities = null;
+        Iterable<T> entities = new ArrayList<>();
         try (EntityManager em = emf.createEntityManager()){
             EntityTransaction entityTransaction = em.getTransaction();
             entityTransaction.begin();

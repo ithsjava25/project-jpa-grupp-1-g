@@ -53,6 +53,6 @@ public class SeriesRepositoryImpl extends BaseRepositoryImpl<Series> implements 
             em.close();
         }
 
-        return entity.map(Series::getDirectors).orElse(null);
+        return entity.map(Series::getDirectors).orElse(Set.of());
     }
 }
