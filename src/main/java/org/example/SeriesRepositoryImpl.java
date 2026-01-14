@@ -19,15 +19,17 @@ public class SeriesRepositoryImpl extends BaseRepositoryImpl<Series> implements 
 
     @Override
     public Optional<Series> findByTitle(String title){
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction entityTransaction = em.getTransaction();
-        entityTransaction.begin();
-        Optional<Series> entity = em.createQuery("SELECT s FROM Series s WHERE s.title = :title", Series.class)
-            .setParameter("title", title)
-            .getResultStream()
-            .findFirst();
-        em.getTransaction().commit();
-        em.close();
+        Optional<Series> entity = Optional.empty();
+        try (EntityManager em = emf.createEntityManager()){
+            EntityTransaction entityTransaction = em.getTransaction();
+            entityTransaction.begin();
+            entity = em.createQuery("SELECT s FROM Series s WHERE s.title = :title", Series.class)
+                .setParameter("title", title)
+                .getResultStream()
+                .findFirst();
+            em.getTransaction().commit();
+        } catch (Exception _) {
+        }
 
         return entity;
     }
@@ -35,15 +37,21 @@ public class SeriesRepositoryImpl extends BaseRepositoryImpl<Series> implements 
     @Override
     public Set<Director> findDirectors(Series series) {
         EntityManager em = emf.createEntityManager();
-        EntityTransaction entityTransaction = em.getTransaction();
-        entityTransaction.begin();
-        long id = series.getId();
-        Optional<Series> entity = em.createQuery("SELECT s FROM Series s JOIN FETCH s.directors d WHERE s.id = :id", Series.class)
-            .setParameter("id", id)
-            .getResultStream()
-            .findFirst();
-        em.getTransaction().commit();
-        em.close();
+        Optional<Series> entity = Optional.empty();
+        try {
+            EntityTransaction entityTransaction = em.getTransaction();
+            entityTransaction.begin();
+            long id = series.getId();
+            entity = em.createQuery("SELECT s FROM Series s JOIN FETCH s.directors d WHERE s.id = :id", Series.class)
+                .setParameter("id", id)
+                .getResultStream()
+                .findFirst();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
 
         return entity.map(Series::getDirectors).orElse(null);
     }

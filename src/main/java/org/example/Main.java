@@ -56,8 +56,8 @@ public class Main {
 
              CLI cli = new CLI();
              cli.cliStart(directorService, filmService, seriesService);
+        }
     }
-}
 
     private static List<Class<?>> getEntities(String pkg) {
         List<Class<?>> entities;

@@ -18,17 +18,18 @@ public class FilmRepositoryImpl extends BaseRepositoryImpl<Film> implements Film
 
     @Override
     public Optional<Film> findByTitle(String title) {
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction entityTransaction = em.getTransaction();
-        entityTransaction.begin();
-        Optional<Film> entity = em.createQuery("SELECT f FROM Film f WHERE f.title = :title", Film.class)
-            .setParameter("title", title)
-            .getResultList().stream()
-            .findFirst();
-        em.getTransaction().commit();
-        em.close();
+        Optional<Film> entity = Optional.empty();
+        try (EntityManager em = emf.createEntityManager()){
+            EntityTransaction entityTransaction = em.getTransaction();
+            entityTransaction.begin();
+            entity = em.createQuery("SELECT f FROM Film f WHERE f.title = :title", Film.class)
+                .setParameter("title", title)
+                .getResultList().stream()
+                .findFirst();
+            em.getTransaction().commit();
+        } catch (Exception _) {
+        }
 
         return entity;
-
     }
 }
