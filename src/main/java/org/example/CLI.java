@@ -301,30 +301,35 @@ public class CLI {
     private void updateSeries() {
         IO.println("When prompted, enter the value you wish to update." +
             "\nIf you don't want to change it, leave the input blank.");
-        Series series = seriesService.findSeriesId(IO.readln("Enter the ID of the Series: "));
-        String title = IO.readln("Enter the title of the Series: ");
-        if (title != null && !title.isEmpty())
-            series.setTitle(title);
         try {
-            int episodes = Integer.parseInt(IO.readln("Enter the number of episodes in the Series: "));
-            series.setEpisodes(episodes);
-        } catch (NumberFormatException _) {
-        }
-        try {
-            int firstAired = Integer.parseInt(IO.readln("Enter the year the Series was first released: "));
-            series.setFirstAired(firstAired);
-        } catch (NumberFormatException _) {
-        }
-        try {
-            Integer lastAired = Integer.valueOf(IO.readln("Enter the year the Series ended: "));
-            series.setLastAired(lastAired);
-        } catch (NumberFormatException _) {
-        }
-        String starActors = IO.readln("Enter the star actors of the Series: ");
-        if (starActors != null && !starActors.isEmpty())
-            series.setStarActors(starActors);
+            Series series = seriesService.findSeriesId(Long.valueOf(IO.readln("Enter the ID of the Series: ")));
+            String title = IO.readln("Enter the title of the Series: ");
+            if (title != null && !title.isEmpty())
+                series.setTitle(title);
+            try {
+                int episodes = Integer.parseInt(IO.readln("Enter the number of episodes in the Series: "));
+                series.setEpisodes(episodes);
+            } catch (NumberFormatException _) {
+            }
+            try {
+                int firstAired = Integer.parseInt(IO.readln("Enter the year the Series was first released: "));
+                series.setFirstAired(firstAired);
+            } catch (NumberFormatException _) {
+            }
+            try {
+                Integer lastAired = Integer.valueOf(IO.readln("Enter the year the Series ended: "));
+                series.setLastAired(lastAired);
+            } catch (NumberFormatException _) {
+            }
+            String starActors = IO.readln("Enter the star actors of the Series: ");
+            if (starActors != null && !starActors.isEmpty())
+                series.setStarActors(starActors);
 
-        seriesService.update(series);
+            seriesService.update(series);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input!");
+        }
+
     }
 
 }

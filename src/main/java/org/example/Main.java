@@ -20,9 +20,11 @@ public class Main {
          try (EntityManagerFactory emf = cfg.createEntityManagerFactory()) {
              emf.runInTransaction(em -> {
                  DirectorRepositoryImpl directorRepository = new DirectorRepositoryImpl(emf);
-                 Director d = new Director();
-                 d.setName("John Doe");
-                 directorRepository.save(d);
+                 if (!directorRepository.findAll().iterator().hasNext()) {
+                    Director d = new Director();
+                    d.setName("John Doe");
+                    directorRepository.save(d);
+                 }
              });
 
              DirectorRepositoryImpl directorRepository = new DirectorRepositoryImpl(emf);
