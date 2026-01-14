@@ -25,7 +25,7 @@ public class Main {
 
 
                 try {
-                    em.getTransaction().begin();
+                    
                     DirectorRepositoryImpl directorRepository = new DirectorRepositoryImpl(emf);
                     Director d = new Director();
                     d.setName("John Doe");
@@ -33,11 +33,10 @@ public class Main {
                     directorRepository.save(d);
 
                     em.getTransaction().commit();
-                    
+
                 } catch (Exception e) {
                     System.err.println("Error: " + e.getMessage());
-                } finally {
-                    em.close();
+                    throw e;
                 }
 
             });
