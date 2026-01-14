@@ -1,8 +1,11 @@
 package org.example;
 
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 
 import java.util.Optional;
+import java.util.Set;
 
 public class SeriesRepositoryImpl extends BaseRepositoryImpl<Series> implements SeriesRepository<Series> {
 
@@ -11,13 +14,37 @@ public class SeriesRepositoryImpl extends BaseRepositoryImpl<Series> implements 
     public SeriesRepositoryImpl(EntityManagerFactory em) {
         super(Series.class);
         this.emf = em;
+        super.setEntityManager(emf);
     }
 
     @Override
     public Optional<Series> findByTitle(String title){
-        return em.createQuery("SELECT s FROM Series s WHERE s.title = :title", Series.class)
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction entityTransaction = em.getTransaction();
+        entityTransaction.begin();
+        Optional<Series> entity = em.createQuery("SELECT s FROM Series s WHERE s.title = :title", Series.class)
             .setParameter("title", title)
             .getResultStream()
             .findFirst();
+        em.getTransaction().commit();
+        em.close();
+
+        return entity;
+    }
+
+    @Override
+    public Set<Director> findDirectors(Series series) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction entityTransaction = em.getTransaction();
+        entityTransaction.begin();
+        long id = series.getId();
+        Optional<Series> entity = em.createQuery("SELECT s FROM Series s JOIN FETCH s.directors d WHERE s.id = :id", Series.class)
+            .setParameter("id", id)
+            .getResultStream()
+            .findFirst();
+        em.getTransaction().commit();
+        em.close();
+
+        return entity.map(Series::getDirectors).orElse(null);
     }
 }

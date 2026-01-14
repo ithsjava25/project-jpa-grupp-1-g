@@ -1,5 +1,8 @@
 package org.example;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class SeriesService {
 
     private final SeriesRepository<Series> seriesRepository;
@@ -36,5 +39,9 @@ public class SeriesService {
     public Series findSeriesTitle(String title) {
         return seriesRepository.findByTitle(title)
             .orElseThrow(() -> new RuntimeException("Series not found: " + title));
+    }
+
+    public Set<Director> getDirectors(Series series) {
+        return seriesRepository.findDirectors(series);
     }
 }

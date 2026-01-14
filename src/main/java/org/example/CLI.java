@@ -1,5 +1,10 @@
 package org.example;
 
+import org.hibernate.Hibernate;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class CLI {
     DirectorService directorService;
     FilmService filmService;
@@ -95,7 +100,7 @@ public class CLI {
     }
 
     private void listDirectors() {
-        IO.println(directorService.findAll());
+        directorService.findAll().forEach(s->System.out.println(s.getName()));
     }
 
     private void listSpecificDirector() {
@@ -111,11 +116,20 @@ public class CLI {
         IO.println("Name: " + d.getName() +
             "\nCountry: " +  d.getCountry() +
             "\nYear of birth: " + d.getBirthYear() +
-            "\nYear of death: " + d.getYearOfDeath() +
-            "Films:\n" +
-            d.getFilms() +
-            "\n\nSeries:\n" +
-            d.getSeries());
+            "\nYear of death: " + (d.getYearOfDeath() == null ? "N/A" :d.getYearOfDeath())  +
+            "\nFilms:");
+        try {
+            directorService.getFilms(d).forEach(film -> IO.println(film.getTitle()));
+        } catch (NullPointerException e) {
+            IO.println("N/A");
+        }
+        IO.println("\nSeries:");
+        try {
+            directorService.getSeries(d).forEach(series ->  IO.println(series.getTitle()));
+        } catch (NullPointerException e) {
+            IO.println("N/A");
+        }
+        IO.println();
     }
 
     private void updateDirector() {
@@ -188,7 +202,7 @@ public class CLI {
     }
 
     private void listFilms() {
-        IO.println(filmService.findAll());
+        filmService.findAll().forEach(s->System.out.println(s.getTitle()));
     }
 
     private void listSpecificFilm() {
@@ -201,7 +215,7 @@ public class CLI {
         }
 
         IO.println("Title: " + f.getTitle() +
-            "\nDirector: " + f.getDirector());
+            "\nDirector: " + f.getDirector().getName());
     }
 
     private void updateFilm() {
@@ -259,7 +273,20 @@ public class CLI {
                     "\nLeave blank if not yet finished: "));
             } catch (NumberFormatException _) {
             }
+
             String starActors = IO.readln("Enter the star actors of the Series: ");
+
+            IO.println("\nEnter the ID of the Directors one by one. Enter 0 when finished.");
+            Set<Director> directors = new HashSet<>();
+            boolean done = false;
+            while (!done){
+                long i = Long.parseLong(IO.readln());
+                if (i == 0L)
+                    done = true;
+                else {
+                    directors.add(directorService.findDirectorId(i));
+                }
+            }
 
             Series series = new Series();
             series.setTitle(title);
@@ -270,13 +297,18 @@ public class CLI {
 
             seriesService.create(series);
 
+            series.setDirectors(directors);
+            seriesService.update(series);
+            directors.forEach(director -> {
+                directorService.addSeries(director, series);});
+
         } catch (NumberFormatException e) {
             System.out.println("Invalid input!");
         }
     }
 
     private void listSeries() {
-        IO.println(seriesService.findAll());
+        seriesService.findAll().forEach(s->System.out.println(s.getTitle()));
     }
 
     private void listSpecificSeries() {
@@ -290,8 +322,13 @@ public class CLI {
         }
 
         IO.println("Title: " + s.getTitle() +
-            "\nDirector: " + s.getDirectors() +
-            "\nEpisodes: " + s.getEpisodes() +
+            "\nDirectors:" );
+        try {
+            seriesService.getDirectors(s).forEach((d->System.out.println(d.getName())));
+        } catch (NullPointerException e) {
+            IO.println("N/A");
+        }
+        IO.println("\nEpisodes: " + s.getEpisodes() +
             "\nFirst Aired: " + s.getFirstAired() +
             "\nLast Aired: " + s.getLastAired() +
             "\nStar Actors: " + s.getStarActors());
@@ -325,7 +362,30 @@ public class CLI {
             if (starActors != null && !starActors.isEmpty())
                 series.setStarActors(starActors);
 
+            IO.println("\nEnter the ID of the Directors one by one, or leave blank if there are no changes.\n" +
+                "Enter 0 when finished: ");
+            Set<Director> directors = new HashSet<>();
+            try {
+                boolean done = false;
+                while (!done){
+                    long i = Long.parseLong(IO.readln());
+                    if (i == 0L)
+                        done = true;
+                    else {
+                        directors.add(directorService.findDirectorId(i));
+                    }
+                }
+            } catch (NumberFormatException _) {
+            }
+
+            if (!directors.isEmpty()) {
+                series.setDirectors(directors);
+                directors.forEach(director -> {
+                    directorService.addSeries(director, series);});
+            }
+
             seriesService.update(series);
+
         } catch (NumberFormatException e) {
             System.out.println("Invalid input!");
         }
