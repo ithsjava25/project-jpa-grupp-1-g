@@ -1,6 +1,9 @@
 package org.example;
 
 
+import jakarta.transaction.Transactional;
+
+import java.util.Set;
 
 public class DirectorService {
 
@@ -65,11 +68,26 @@ public class DirectorService {
             .orElseThrow(() -> new RuntimeException("Director not found: " + id));
     }
 
+
     public Director findDirectorName(String name) {
         return directorRepository.findByName(name)
             .orElseThrow(() -> new RuntimeException("Director not found: " + name));
     }
+
+    public Set<Film> getFilms(Director director) {
+        return directorRepository.findFilms(director);
+    }
+
+    public Set<Series> getSeries(Director director) {
+        return directorRepository.findSeries(director);
+    }
+
+    public void addSeries(Director director, Series series) {
+        directorRepository.addSeries(director, series);
+    }
 }
+
+
 
 
 

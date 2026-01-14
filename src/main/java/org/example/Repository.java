@@ -12,7 +12,4 @@ public interface Repository<T extends org.example.BaseEntity> {
 
     long count();
 
-    void flush();
-
-    void clear();
 }

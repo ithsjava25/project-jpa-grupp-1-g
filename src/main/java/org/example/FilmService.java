@@ -1,5 +1,7 @@
 package org.example;
 
+import jakarta.transaction.Transactional;
+
 public class FilmService {
 
     private final FilmRepository<Film> filmRepository;
